@@ -12,13 +12,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # - name: Build plugin # Remove or modify this step as needed
-      #   run: |
-      #     composer install --no-dev
-      #     npm install
-      #     npm run build
+      - name: Build Plugin
+        run: |
+          bash bin/build.sh ${{ github.event.repository.name }}
+        shell: bash
 
-      - name: Generate zip
-        uses: 10up/action-wordpress-plugin-build-zip@stable
-        env:
-          SLUG: importwp-test # optional, remove if GitHub repo name matches SVN slug, including capitalization
+      - name: Upload the archive as an artifact
+        id: upload-plugin-artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ github.event.repository.name }}
+          path: build/${{ github.event.repository.name }}
