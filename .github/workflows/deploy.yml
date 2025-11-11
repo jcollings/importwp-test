@@ -1,0 +1,24 @@
+name: Deploy
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  tag:
+    name: New release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # - name: Build plugin # Remove or modify this step as needed
+      #   run: |
+      #     composer install --no-dev
+      #     npm install
+      #     npm run build
+
+      - name: Generate zip
+        uses: 10up/action-wordpress-plugin-build-zip@stable
+        env:
+          SLUG: importwp-test # optional, remove if GitHub repo name matches SVN slug, including capitalization
